@@ -26,20 +26,20 @@ export default function About() {
             />
             </div>
 
-            <div className="flex flex-col gap-4 flex-shrink-0">
-            <div className="bg-yellow-400 rounded-xl w-[450px] h-[135px] p-6 flex flex-col justify-center">
-                <h3 className="text-2xl font-bold">1,000+</h3>
-                <p className="text-sm">Succesful Project</p>
+            <div className="flex flex-col gap-7 flex-shrink-0">
+            <div className="bg-yellow-400 rounded-xl w-[450px] h-[130px] p-6 flex flex-col justify-center">
+                <h3 className="text-black font-bold text-3xl">1,000+</h3>
+                <p className="text-black">Succesful Project</p>
             </div>
 
-            <div className="bg-yellow-400 rounded-xl w-[450px] h-[135px] p-6 flex flex-col justify-center">
-                <h3 className="text-2xl font-bold">90%</h3>
-                <p className="text-sm">Kepuasan Pelanggan</p>
+            <div className="bg-yellow-400 rounded-xl w-[450px] h-[130px] p-6 flex flex-col justify-center">
+                <h3 className="text-black font-bold text-3xl">90%</h3>
+                <p className="text-black">Kepuasan Pelanggan</p>
             </div>
 
-            <div className="bg-yellow-400 rounded-xl w-[450px] h-[135px] p-6 flex flex-col justify-center">
-                <h3 className="text-2xl font-bold">10+</h3>
-                <p className="text-sm">Perusahaan ini berdiri</p>
+            <div className="bg-yellow-400 rounded-xl w-[450px] h-[130px] p-6 flex flex-col justify-center">
+                <h3 className="text-black font-bold text-3xl">10+</h3>
+                <p className="text-black">Perusahaan ini berdiri</p>
             </div>
             </div>
         </div>

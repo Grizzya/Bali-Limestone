@@ -24,3 +24,24 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+{/* Services  Animation */}
+@keyframes scroll-x {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    /* Bergeser sejauh 50% karena kita punya 2 set kartu yang persis sama */
+    transform: translateX(-50%); 
+  }
+}
+
+.animate-marquee {
+  animation: scroll-x 20s linear infinite;
+}
+
+/* Berhenti saat disentuh mouse (Desktop) atau ditekan tahan (Mobile) */
+.animate-marquee:hover,
+.animate-marquee:active {
+  animation-play-state: paused;
+}
