@@ -1,12 +1,15 @@
-import { div } from "framer-motion/client";
-
-export default function DashboardPage(){
-    return (
-        <div className="min-h-screen pg-8 bg-gray-50 text-black">
-            <h1 className="text-3xl font-bold">
-            Ini Dashboard Admin!
-            <p className="mt-4">Semua Fitur disini</p>
-            </h1>
-        </div>
-    );
+export default function DashboardPage() {
+  return (
+    <div>
+      {/* Sesuai gambar, judul "Dashboard" ada di kiri atas */}
+      <h1 className="text-3xl font-bold text-gray-800 mb-8">Dashboard</h1>
+      
+      <div className="bg-white p-6 rounded-lg shadow-sm border">
+        <h2 className="text-xl font-semibold mb-2">Selamat Datang, Admin!</h2>
+        <p className="text-gray-600">
+          Gunakan menu di sebelah kiri untuk mengelola Artikel, Produk, Kategori, dan Jasa untuk website Bali Limestone.
+        </p>
+      </div>
+    </div>
+  );
 }
