@@ -1,127 +1,218 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
+import Link from "next/link";
+import { servicesData } from "@/src/data/services";
 
 type CardProps = {
   title: string;
   img: string;
+  slug: string;
 };
 
 export default function Services() {
-  const [active, setActive] = useState<number | null>(null);
+  const [active, setActive]       = useState<number | null>(null);
+  const [current, setCurrent]     = useState(0);
+  const [direction, setDirection] = useState(1);
 
-  const isLeftActive = active === 2 || active === 3;
+  // Pakai servicesData langsung
+  const services = servicesData;
+
+  const isLeftActive  = active === 2 || active === 3;
   const isRightActive = active === 1 || active === 4;
 
+  const prev = () => {
+    setDirection(-1);
+    setCurrent((c) => (c === 0 ? services.length - 1 : c - 1));
+  };
+
+  const next = () => {
+    setDirection(1);
+    setCurrent((c) => (c === services.length - 1 ? 0 : c + 1));
+  };
+
   return (
-    <div className="bg-white"> 
+    <div className="bg-white">
       <section className="bg-[#1a1a1a] text-white py-20 overflow-hidden rounded-t-[25px]">
         <div className="max-w-8xl mx-auto px-12">
-          
-          
-          <div className="flex flex-col lg:flex-row gap-4 h-auto lg:h-137.5">
 
-            <motion.div
-              layout
-              style={{ flex: isLeftActive ? 1.5 : isRightActive ? 0.8 : 1 }}
-              className="flex flex-col gap-4"
-            >
-              
-              <motion.div
-                layout
-                style={{ flex: isLeftActive ? 0.6 : 1 }}
-                className="flex flex-col justify-center"
-              >
-                <h2 className="text-4xl md:text-5xl font-bold mb-6 leading-tight">
-                  Layanan <br className="hidden lg:block" /> Kami
-                </h2>
+          {/* ── MOBILE ONLY ── */}
+          <div className="lg:hidden">
+            <h2 className="text-4xl font-bold mb-4 leading-tight">Layanan Kami</h2>
+            <p className="text-gray-300 text-sm leading-relaxed mb-8">
+              Layanan yang kami sediakan di <b>Bali Limestone</b> yaitu meliputi
+              Land Cut and Fill, Galian Basement, Land Clearing, dan Bongkar Bangunan.
+            </p>
 
-                <p className="text-gray-300 text-sm leading-relaxed">
-                  Layanan yang kami sediakan di <b>Bali Limestone</b> yaitu meliputi
-                  Land Cut and Fill, Galian Basement, Land Clearing, dan Bongkar Bangunan.
-                </p>
-              </motion.div>
+            <div className="relative -mx-12 overflow-hidden">
+              <div className="relative w-full h-[340px]">
+                <AnimatePresence initial={false} custom={direction}>
+                  <motion.div
+                    key={current}
+                    custom={direction}
+                    variants={{
+                      enter:  (dir: number) => ({ x: dir > 0 ? "100%" : "-100%", opacity: 0 }),
+                      center: { x: 0, opacity: 1 },
+                      exit:   (dir: number) => ({ x: dir > 0 ? "-100%" : "100%", opacity: 0 }),
+                    }}
+                    initial="enter"
+                    animate="center"
+                    exit="exit"
+                    transition={{ duration: 0.4, ease: "easeInOut" }}
+                    className="absolute inset-0 w-full h-full"
+                  >
+                    <Link href={`/services/${services[current].slug}`} className="block w-full h-full">
+                      <img
+                        src={services[current].mainImage}
+                        alt={services[current].title}
+                        className="w-full h-full object-cover"
+                      />
+                      <div className="absolute bottom-0 left-0 w-full bg-yellow-400 text-black px-6 py-3 flex justify-between items-center">
+                        <span className="font-semibold text-base">{services[current].title}</span>
+                        <span className="text-xl">›</span>
+                      </div>
+                    </Link>
+                  </motion.div>
+                </AnimatePresence>
 
-             
-              <motion.div
-                layout
-                style={{ flex: isLeftActive ? 1.8 : 1 }}
-                className="flex gap-4 min-h-50 lg:min-h-0"
-              >
-                <motion.div
-                  layout
-                  onMouseEnter={() => setActive(2)}
-                  onMouseLeave={() => setActive(null)}
-                  style={{ flex: active === 2 ? 1.8 : active === 3 ? 0.6 : 1 }}
-                  className="relative rounded-xl overflow-hidden w-full"
+                {/* Tombol kiri */}
+                <button
+                  onClick={(e) => { e.preventDefault(); prev(); }}
+                  aria-label="Sebelumnya"
+                  className="absolute left-0 top-0 z-10 h-full w-16 flex items-center justify-start pl-3 bg-gradient-to-r from-black/30 to-transparent text-white"
                 >
-                  <Card title="Bongkar Bangunan" img="/img4.jpg" />
-                </motion.div>
+                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <polyline points="15 18 9 12 15 6" />
+                  </svg>
+                </button>
 
-                <motion.div
-                  layout
-                  onMouseEnter={() => setActive(3)}
-                  onMouseLeave={() => setActive(null)}
-                  style={{ flex: active === 3 ? 1.8 : active === 2 ? 0.6 : 1 }}
-                  className="relative rounded-xl overflow-hidden w-full"
+                {/* Tombol kanan */}
+                <button
+                  onClick={(e) => { e.preventDefault(); next(); }}
+                  aria-label="Berikutnya"
+                  className="absolute right-0 top-0 z-10 h-full w-16 flex items-center justify-end pr-3 bg-gradient-to-l from-black/30 to-transparent text-white"
                 >
-                  <Card title="Land Cut and Fill" img="/img2.jpg" />
-                </motion.div>
-              </motion.div>
-              
-            </motion.div>
+                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <polyline points="9 18 15 12 9 6" />
+                  </svg>
+                </button>
+              </div>
+            </div>
 
-            
-            <motion.div
-              layout
-              style={{ flex: isRightActive ? 1.6 : isLeftActive ? 0.8 : 1.2 }}
-              className="flex flex-col gap-4"
-            >
-              
-            
-              <motion.div
-                layout
-                onMouseEnter={() => setActive(1)}
-                onMouseLeave={() => setActive(null)}
-                style={{ flex: active === 1 ? 1.8 : active === 4 ? 0.6 : 1 }}
-                className="relative rounded-xl overflow-hidden w-full min-h-50 lg:min-h-0"
-              >
-                <Card title="Galian Basement" img="/img1.jpg" />
-              </motion.div>
-
-            
-              <motion.div
-                layout
-                onMouseEnter={() => setActive(4)}
-                onMouseLeave={() => setActive(null)}
-                style={{ flex: active === 4 ? 1.8 : active === 1 ? 0.6 : 1 }}
-                className="relative rounded-xl overflow-hidden w-full min-h-50 lg:min-h-0"
-              >
-                <Card title="Land Clearing" img="/img3.jpg" />
-              </motion.div>
-
-            </motion.div>
-
+            {/* Dot indicator */}
+            <div className="flex justify-center gap-2 mt-4">
+              {services.map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => { setDirection(i > current ? 1 : -1); setCurrent(i); }}
+                  className={`h-2 rounded-full transition-all duration-300 ${
+                    i === current ? "bg-yellow-400 w-5" : "bg-white/30 w-2"
+                  }`}
+                />
+              ))}
+            </div>
           </div>
+
+          {/* ── DESKTOP ONLY ── */}
+          <div className="hidden lg:block">
+            <div className="flex flex-col lg:flex-row gap-4 h-auto lg:h-137.5">
+
+              <motion.div
+                layout
+                style={{ flex: isLeftActive ? 1.5 : isRightActive ? 0.8 : 1 }}
+                className="flex flex-col gap-4"
+              >
+                <motion.div
+                  layout
+                  style={{ flex: isLeftActive ? 0.6 : 1 }}
+                  className="flex flex-col justify-center"
+                >
+                  <h2 className="text-4xl md:text-5xl font-bold mb-6 leading-tight">
+                    Layanan <br className="hidden lg:block" /> Kami
+                  </h2>
+                  <p className="text-gray-300 text-sm leading-relaxed">
+                    Layanan yang kami sediakan di <b>Bali Limestone</b> yaitu meliputi
+                    Land Cut and Fill, Galian Basement, Land Clearing, dan Bongkar Bangunan.
+                  </p>
+                </motion.div>
+
+                <motion.div
+                  layout
+                  style={{ flex: isLeftActive ? 1.8 : 1 }}
+                  className="flex gap-4 min-h-50 lg:min-h-0"
+                >
+                  <motion.div
+                    layout
+                    onMouseEnter={() => setActive(2)}
+                    onMouseLeave={() => setActive(null)}
+                    style={{ flex: active === 2 ? 1.8 : active === 3 ? 0.6 : 1 }}
+                    className="relative rounded-xl overflow-hidden w-full"
+                  >
+                    <Card title={services[1].title} img={services[1].mainImage} slug={services[1].slug} />
+                  </motion.div>
+
+                  <motion.div
+                    layout
+                    onMouseEnter={() => setActive(3)}
+                    onMouseLeave={() => setActive(null)}
+                    style={{ flex: active === 3 ? 1.8 : active === 2 ? 0.6 : 1 }}
+                    className="relative rounded-xl overflow-hidden w-full"
+                  >
+                    <Card title={services[0].title} img={services[0].mainImage} slug={services[0].slug} />
+                  </motion.div>
+                </motion.div>
+              </motion.div>
+
+              <motion.div
+                layout
+                style={{ flex: isRightActive ? 1.6 : isLeftActive ? 0.8 : 1.2 }}
+                className="flex flex-col gap-4"
+              >
+                <motion.div
+                  layout
+                  onMouseEnter={() => setActive(1)}
+                  onMouseLeave={() => setActive(null)}
+                  style={{ flex: active === 1 ? 1.8 : active === 4 ? 0.6 : 1 }}
+                  className="relative rounded-xl overflow-hidden w-full min-h-50 lg:min-h-0"
+                >
+                  <Card title={services[2].title} img={services[2].mainImage} slug={services[2].slug} />
+                </motion.div>
+
+                <motion.div
+                  layout
+                  onMouseEnter={() => setActive(4)}
+                  onMouseLeave={() => setActive(null)}
+                  style={{ flex: active === 4 ? 1.8 : active === 1 ? 0.6 : 1 }}
+                  className="relative rounded-xl overflow-hidden w-full min-h-50 lg:min-h-0"
+                >
+                  <Card title={services[3].title} img={services[3].mainImage} slug={services[3].slug} />
+                </motion.div>
+              </motion.div>
+
+            </div>
+          </div>
+
         </div>
       </section>
     </div>
   );
 }
 
-function Card({ title, img }: CardProps) {
+function Card({ title, img, slug }: CardProps) {
   return (
-    <div className="w-full h-full relative group cursor-pointer">
-      <img
-        src={img}
-        alt={title}
-        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-      />
-      <div className="absolute bottom-0 left-0 w-full bg-[#ffcc00] text-black px-4 py-3 flex justify-between items-center transition-all duration-300">
-        <span className="font-medium text-sm md:text-base">{title}</span>
-        <span>›</span>
+    <Link href={`/services/${slug}`} className="block w-full h-full">
+      <div className="w-full h-full relative group cursor-pointer">
+        <img
+          src={img}
+          alt={title}
+          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+        />
+        <div className="absolute bottom-0 left-0 w-full bg-[#ffcc00] text-black px-4 py-3 flex justify-between items-center transition-all duration-300">
+          <span className="font-medium text-sm md:text-base">{title}</span>
+          <span>›</span>
+        </div>
       </div>
-    </div>
+    </Link>
   );
 }

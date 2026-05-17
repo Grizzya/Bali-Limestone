@@ -3,7 +3,7 @@
 import { motion, useMotionValue, useAnimationFrame } from "framer-motion";
 import { useRef, useEffect, useState } from "react";
 
-// Data dummy testimoni
+
 const testimonials = [
   {
     id: 1,
@@ -70,7 +70,7 @@ export default function Testimonials() {
     <section className="py-24 bg-white overflow-hidden">
       <div className="max-w-8xl mx-auto px-0">
         
-        {/* 🔹 HEADER SECTION */}
+        {/*  HEADER SECTION */}
         <div className="text-center max-w-3xl mx-auto mb-16">
           <h2 className="text-4xl md:text-5xl font-semibold text-black mb-6">
             What They Say About Us
@@ -82,7 +82,7 @@ export default function Testimonials() {
           </p>
         </div>
 
-        {/* 🔹 INFINITE MARQUEE DRAGGABLE SECTION */}
+       
         <div 
           className="overflow-hidden cursor-grab active:cursor-grabbing"
           onMouseEnter={() => setIsHovered(true)}
@@ -123,7 +123,6 @@ function TestimonialCard({ item }: { item: any }) {
   return (
     <div className="w-[320px] md:w-100 bg-[#fafafa] rounded-2xl p-8 flex flex-col justify-between shrink-0 border border-gray-100 transition-colors duration-300 hover:border-gray-300">
       <div className="flex justify-between items-start mb-6">
-        {/* Foto & Nama */}
         <div className="flex items-center gap-4">
           <div className="w-12 h-12 bg-white rounded-full border border-gray-200 shadow-sm shrink-0"></div>
           <div>

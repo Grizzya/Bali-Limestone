@@ -5,10 +5,9 @@ export default function Footer() {
     <footer className="bg-[#1a1a1a] pt-24 pb-12">
       <div className="w-full max-w-8xl mx-auto px-12">
         
-        {/* 🔹 BAGIAN ATAS: Logo dan Menu (Menggunakan Grid) */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-8 items-start">
           
-          {/* 1. Kiri: Logo Foto (Mengambil 4 dari 12 kolom) */}
+          {/* Logo Foto */}
           <div className="lg:col-span-4 flex justify-start">
             <img 
               src="/logo.png" 
@@ -17,7 +16,6 @@ export default function Footer() {
             />
           </div>
 
-          {/* 2. Tengah: Menu Explore & Contact (Mengambil 8 dari 12 kolom & dipusatkan) */}
           <div className="lg:col-span-8 flex flex-col sm:flex-row justify-start lg:justify-center gap-16 lg:gap-[150px]">
             
             {/* Kolom Explore */}
@@ -67,7 +65,7 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* 🔹 BAGIAN BAWAH: Ikon Sosial Media & Garis Horizontal */}
+        {/*  Ikon Sosial Media  Garis Horizontal */}
         <div className="flex items-center justify-between w-full mt-28">
           
           {/* Garis Kiri */}
