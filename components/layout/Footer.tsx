@@ -2,62 +2,98 @@ import Link from "next/link";
 
 export default function Footer() {
   return (
-    <footer className="bg-[#1a1a1a] pt-24 pb-12">
-      <div className="w-full max-w-8xl mx-auto px-12">
-        
-        {/* 🔹 BAGIAN ATAS: Logo dan Menu (Menggunakan Grid) */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-8 items-start">
-          
-          {/* 1. Kiri: Logo Foto (Mengambil 4 dari 12 kolom) */}
-          <div className="lg:col-span-4 flex justify-start">
-            <img 
-              src="/logo.png" 
-              alt="Bali Limestone Logo" 
-              className="h-28 w-auto object-contain" 
-            />
-          </div>
+    <footer className="bg-[#1a1a1a] pt-16 md:pt-24 pb-10 md:pb-12">
+      <div className="w-full max-w-8xl mx-auto px-6 sm:px-8 md:px-12">
 
-          {/* 2. Tengah: Menu Explore & Contact (Mengambil 8 dari 12 kolom & dipusatkan) */}
-          <div className="lg:col-span-8 flex flex-col sm:flex-row justify-start lg:justify-center gap-16 lg:gap-[150px]">
-            
-            {/* Kolom Explore */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-start">
+
+          {/* Logo */}
+          {/* Logo */}
+<div className="lg:col-span-4 flex justify-center lg:justify-start items-center lg:items-start overflow-hidden">
+  <img
+    src="/BALI_LIMESTONE_transparent.png"
+    alt="Bali Limestone Logo"
+    className="
+      w-[150px] h-[150px]
+      sm:w-[180px] sm:h-[180px]
+      md:w-[200px] md:h-[200px]
+
+      lg:w-[240px] lg:h-[240px]
+      lg:-mt-12 lg:-ml-0
+
+      object-contain object-center
+    "
+  />
+</div>
+          {/* Menu */}
+          <div className="lg:col-span-8 flex flex-col sm:flex-row justify-center lg:justify-center items-center sm:items-start gap-12 sm:gap-20 lg:gap-[150px] text-center sm:text-left">
+
+            {/* Explore */}
             <div>
-              <h3 className="text-white text-[22px] font-medium mb-8">Explore</h3>
-              <ul className="flex flex-col gap-5">
+              <h3 className="text-white text-[20px] md:text-[22px] font-medium mb-6 md:mb-8">
+                Explore
+              </h3>
+
+              <ul className="flex flex-col gap-4 md:gap-5">
                 <li>
-                  <Link href="/" className="text-gray-400 hover:text-white transition-colors text-[16px] font-light">
+                  <Link
+                    href="/"
+                    className="text-gray-400 hover:text-white transition-colors text-[15px] md:text-[16px] font-light"
+                  >
                     Home
                   </Link>
                 </li>
+
                 <li>
-                  <Link href="/about" className="text-gray-400 hover:text-white transition-colors text-[16px] font-light">
+                  <Link
+                    href="/about"
+                    className="text-gray-400 hover:text-white transition-colors text-[15px] md:text-[16px] font-light"
+                  >
                     About
                   </Link>
                 </li>
+
                 <li>
-                  <Link href="/service" className="text-gray-400 hover:text-white transition-colors text-[16px] font-light">
+                  <Link
+                    href="/service"
+                    className="text-gray-400 hover:text-white transition-colors text-[15px] md:text-[16px] font-light"
+                  >
                     Service
                   </Link>
                 </li>
+
                 <li>
-                  <Link href="/product" className="text-gray-400 hover:text-white transition-colors text-[16px] font-light">
+                  <Link
+                    href="/product"
+                    className="text-gray-400 hover:text-white transition-colors text-[15px] md:text-[16px] font-light"
+                  >
                     Product
                   </Link>
                 </li>
               </ul>
             </div>
 
-            {/* Kolom Contact */}
+            {/* Contact */}
             <div>
-              <h3 className="text-white text-[22px] font-medium mb-8">Contact</h3>
-              <ul className="flex flex-col gap-5">
+              <h3 className="text-white text-[20px] md:text-[22px] font-medium mb-6 md:mb-8">
+                Contact
+              </h3>
+
+              <ul className="flex flex-col gap-4 md:gap-5">
                 <li>
-                  <a href="mailto:balilimestone@gmail.com" className="text-gray-400 hover:text-white transition-colors text-[16px] font-light">
+                  <a
+                    href="mailto:balilimestone@gmail.com"
+                    className="text-gray-400 hover:text-white transition-colors text-[15px] md:text-[16px] font-light break-all"
+                  >
                     balilimestone@gmail.com
                   </a>
                 </li>
+
                 <li>
-                  <a href="tel:+628181802020" className="text-gray-400 hover:text-white transition-colors text-[16px] font-light">
+                  <a
+                    href="tel:+628181802020"
+                    className="text-gray-400 hover:text-white transition-colors text-[15px] md:text-[16px] font-light"
+                  >
                     +62 8181802020
                   </a>
                 </li>
@@ -67,8 +103,7 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* 🔹 BAGIAN BAWAH: Ikon Sosial Media & Garis Horizontal */}
-        <div className="flex items-center justify-between w-full mt-28">
+         <div className="flex items-center justify-between w-full mt-28">
           
           {/* Garis Kiri */}
           <div className="h-[1px] bg-gray-600 flex-1"></div>

@@ -6,6 +6,7 @@ import ProductSection from "@/components/sections/ProductSection";
 import Review from "@/components/sections/Review";
 import Location from "@/components/sections/Location";
 import Footer from "@/components/layout/Footer";
+import Image from "@/components/Reveal";
 
 export const metadata = {
   title: "Bali Limestone Supplier | Jasa & Material Bali",
