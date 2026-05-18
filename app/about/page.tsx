@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Navbar from "@/components/layout/Navbar";
+import Footer from "@/components/layout/Footer";
 
 export const metadata = {
   title: "About Us | Bali Limestone",
@@ -35,10 +36,10 @@ export default function AboutPage() {
 
 
         {/*  HERO BANNER */}
-        <section className="relative w-full h-[420px] overflow-hidden mt-20">
+        <section className="relative w-full h-[420px] overflow-hidden mt-20 mb-20">
           {/* Background Image */}
           <Image
-            src="/images/excavator.jpg"
+            src="/Dummy.webp"
             alt="Excavator Bali Limestone"
             fill
             priority
@@ -51,38 +52,17 @@ export default function AboutPage() {
           {/* Content */}
           <div className="absolute inset-0 z-20 flex flex-col items-center justify-center gap-4">
             {/* Logo */}
-            <svg
-              viewBox="0 0 60 60"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-              className="w-16 h-16"
-            >
-              <path
-                d="M30 6L4 26H10V54H26V38H34V54H50V26H56L30 6Z"
-                stroke="white"
-                strokeWidth="2"
-              />
-
-              <path
-                d="M22 38H18V46H22V38Z"
-                stroke="white"
-                strokeWidth="1.5"
-              />
-
-              <path
-                d="M30 20C27.8 20 26 21.8 26 24C26 26.2 27.8 28 30 28C32.2 28 34 26.2 34 24C34 21.8 32.2 20 30 20Z"
-                stroke="white"
-                strokeWidth="1.5"
-              />
-            </svg>
-
-            {/* Brand */}
-            <span className="text-white text-sm md:text-base font-bold tracking-[0.3em] uppercase">
-              Bali Limestone
-            </span>
+            <Image
+              src="/BALI LIMESTONE.png"
+              alt="Bali Limestone Logo"
+              width={500}
+              height={500}
+            />
           </div>
         </section>
       </main>
+
+      <Footer />
     </>
   );
 }

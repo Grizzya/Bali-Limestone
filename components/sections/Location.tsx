@@ -6,7 +6,7 @@ export default function FindUs() {
       
       <div className="w-full max-w-8xl mx-auto px-4 md:px-8 lg:px-12">
         
-        <div className="relative rounded-[24px] md:rounded-[40px] w-full h-[400px] md:h-[500px] lg:h-[600px] overflow-hidden shadow-sm">
+        <div className="relative rounded-[24px] md:rounded-[40px] w-full h-[250px] md:h-[500px] lg:h-[600px] overflow-hidden shadow-sm">
           
           <iframe 
             src="https://maps.google.com/maps?q=Jl.+Raya+Dalung+No.83,+Badung,+Bali&t=&z=16&ie=UTF8&iwloc=&output=embed" 

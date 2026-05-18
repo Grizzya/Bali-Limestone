@@ -133,7 +133,7 @@ export default function ProductPage() {
                     onClick={() => setActiveCategory(cat)}
                     className={`w-full text-left text-sm px-4 py-3 rounded-2xl transition-all duration-200 ${
                       activeCategory === cat
-                        ? "bg-white text-black font-bold shadow"
+                        ? "bg-yellow-400 text-black font-bold shadow"
                         : "text-gray-500 hover:bg-white/40"
                     }`}
                   >

@@ -50,7 +50,7 @@ export default function ProductSection() {
     
     <section className="bg-[#1a1a1a]">
       
-      <div className="bg-white rounded-t-[50px] py-16 px-6 md:px-16 overflow-hidden">
+      <div className="bg-white rounded-t-[30px] py-16 px-6 md:px-16 overflow-hidden">
         
         {/*  HEADER  */}
         <div className="flex items-center justify-between mb-10">
@@ -134,7 +134,7 @@ export default function ProductSection() {
               >
                 <ProductCard
                   product={item}
-                  aspectRatio="aspect-[410/550]"
+                  aspectRatio="aspect-[410/500]"
                   onClick={() => setSelectedProduct(item)}
                 />
               </div>
