@@ -3,14 +3,70 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
+  provider = "mysql" 
   url      = env("DATABASE_URL")
 }
 
-// Contoh tabel untuk layanan/produk
-model Product {
-  id          Int      @id @default(autoincrement())
-  name        String
-  description String   @db.Text
+model Admin {
+  id        String         @id @default(cuid())
+  username  String         @unique
+  email     String         @unique
+  password  String         
+  nama      String         
+  role      String         @default("ADMIN") 
+  isActive  Boolean        @default(true) // <-- TAMBAHKAN BARIS INI
+  logs      LogAktivitas[] 
+  createdAt DateTime       @default(now())
+}
+
+model LogAktivitas {
+  id        String   @id @default(cuid())
+  adminId   String
+  admin     Admin    @relation(fields: [adminId], references: [id], onDelete: Cascade)
+  aksi      String   
+  detail    String   
+  createdAt DateTime @default(now())
+}
+
+// --- TABEL KATEGORI ---
+model Kategori {
+  id        String   @id @default(cuid())
+  nama      String
+  produk    Produk[] 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// --- TABEL PRODUK ---
+model Produk {
+  id          String   @id @default(cuid())
+  nama        String
+  deskripsi   String   @db.Text
+  harga       Int
+  gambar      String?  
+  kategoriId  String
+  kategori    Kategori @relation(fields: [kategoriId], references: [id])
   createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+// --- TABEL ARTIKEL ---
+model Artikel {
+  id        String   @id @default(cuid())
+  judul     String
+  konten    String   @db.Text
+  gambar    String?  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// --- TABEL JASA ---
+model Jasa {
+  id        String   @id @default(cuid())
+  nama      String
+  deskripsi String   @db.Text
+  harga     Int?     
+  gambar    String?  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
