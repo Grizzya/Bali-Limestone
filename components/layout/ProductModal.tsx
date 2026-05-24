@@ -10,7 +10,6 @@ export default function ProductModal({
   product: any;
   onClose: () => void;
 }) {
-  // Tutup modal saat tekan Escape
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
@@ -23,16 +22,17 @@ export default function ProductModal({
     };
   }, [onClose]);
 
-  const displayTitle = product?.title || product?.name || "Produk";
-  const displayImage = product?.image || product?.src || "/Batukapur.jpg";
-  const displayDesc = product?.description || "Deskripsi produk lengkap akan segera tersedia.";
+  // PERUBAHAN: Menyesuaikan dengan kolom database Prisma dan format Rupiah
+  const displayTitle = product?.nama || product?.title || "Produk";
+  const displayImage = product?.gambar || product?.image || "/Batukapur.jpg";
+  const displayDesc = product?.deskripsi || product?.description || "Deskripsi produk lengkap akan segera tersedia.";
+  const displayPrice = product?.harga ? `Rp ${product.harga.toLocaleString('id-ID')}` : null;
 
   return (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
       onClick={onClose}
     >
-      {/* KONTENER UTAMA */}
       <div
           className="relative flex flex-col md:flex-row overflow-hidden shadow-2xl
                     w-full max-w-[335px] h-[440px] rounded-[10px] 
@@ -40,22 +40,18 @@ export default function ProductModal({
           onClick={(e) => e.stopPropagation()}
         >
         
-        {/*MOBILE*/}
         <div className="absolute inset-0 md:hidden z-0">
           <Image src={displayImage} alt={displayTitle} fill className="object-cover" priority />
           <div className="absolute inset-0 bg-black/60" />
         </div>
 
-        {/*DESKTOP*/}
         <div className="hidden md:block relative w-1/2 h-full shrink-0 z-0">
           <Image src={displayImage} alt={displayTitle} fill className="object-cover" priority />
         </div>
 
-        {/*TEKS TOMBOL */}
         <div className="relative z-10 flex flex-col justify-between h-full p-8 md:w-1/2 md:px-12 md:py-12">
           
           <div className="flex flex-col gap-4 md:gap-8 mt-6 md:mt-0">
-            {/* Judul Desktop */}
             <h2
               className="text-white md:text-gray-900 text-4xl md:text-5xl leading-tight drop-shadow-md md:drop-shadow-none"
               style={{ fontFamily: "'Inter', sans-serif", fontWeight: 800 }}
@@ -63,7 +59,13 @@ export default function ProductModal({
               {displayTitle}
             </h2>
             
-            {/* Deskripsi Mobile, Abu-abu Desktop. */}
+            {/* Tampilkan Harga Jika Ada */}
+            {displayPrice && (
+              <p className="text-yellow-400 md:text-gray-800 text-xl md:text-2xl font-bold">
+                {displayPrice}
+              </p>
+            )}
+
             <p
               className="text-white/90 md:text-gray-600 text-sm leading-relaxed text-justify line-clamp-5 md:line-clamp-none drop-shadow md:drop-shadow-none"
               style={{ fontFamily: "'Inter', sans-serif", fontWeight: 300 }}
@@ -72,7 +74,6 @@ export default function ProductModal({
             </p>
           </div>
 
-          {/* Tombol Pesan Sekarang */}
           <button
             className="w-full bg-[#ffcc00] hover:bg-yellow-500 text-black py-3 md:py-4 mt-6 transition-all duration-200 hover:scale-[1.02] active:scale-95 shadow-lg md:shadow 
                        rounded-[10px] md:rounded-xl"
@@ -81,8 +82,6 @@ export default function ProductModal({
             Pesan Sekarang
           </button>
         </div>
-
-        {/*TOMBOL CLOSE */}
 
         <button
           onClick={onClose}
@@ -94,7 +93,6 @@ export default function ProductModal({
             <path d="M18 6L6 18M6 6l12 12" />
           </svg>
         </button>
-
       </div>
     </div>
   );

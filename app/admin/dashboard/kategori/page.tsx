@@ -11,7 +11,7 @@ export default async function KategoriPage({
   // Logika Pagination
   const resolvedSearchParams = await searchParams;
   const currentPage = Number(resolvedSearchParams.page) || 1;
-  const itemsPerPage = 1;
+  const itemsPerPage = 5;
   const skip = (currentPage - 1) * itemsPerPage;
 
   // Ambil data Kategori dengan batasan 10 per halaman
@@ -39,13 +39,33 @@ export default async function KategoriPage({
     revalidatePath('/admin/dashboard/kategori');
   }
 
-  async function hapusKategori(formData: FormData) {
-    'use server';
-    const id = formData.get('id') as string;
-    await prisma.kategori.delete({ where: { id } });
-    revalidatePath('/admin/dashboard/kategori');
+ async function hapusKategori(formData: FormData) {
+  'use server';
+  const id = formData.get('id') as string;
+  if (!id) return;
+
+  // 1. Cek apakah masih ada produk yang nyangkut di kategori ini
+  const jumlahProduk = await prisma.produk.count({
+    where: { kategoriId: id }
+  });
+
+  // 2. Jika masih ada produk, hentikan proses penghapusan
+  if (jumlahProduk > 0) {
+    console.error(`Gagal menghapus: Masih ada ${jumlahProduk} produk di kategori ini.`);
+    // Opsional: Kamu bisa melempar error ke frontend di sini jika pakai state
+    return; 
   }
 
+  // 3. Jika kosong, ambil nama untuk log, lalu hapus dengan aman
+  const kategori = await prisma.kategori.findUnique({ where: { id: id } });
+  if (!kategori) return;
+
+  await prisma.kategori.delete({ where: { id: id } });
+  
+  // (Masukkan fungsi logger buatanmu di sini)
+
+  revalidatePath('/admin/dashboard/kategori');
+}
   return (
     <div className="p-8 max-w-5xl mx-auto text-black">
       <h1 className="text-3xl font-bold mb-8 text-gray-800">Kelola Kategori</h1>

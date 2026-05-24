@@ -3,7 +3,6 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import Link from "next/link";
-import { servicesData } from "@/src/data/services";
 
 type CardProps = {
   title: string;
@@ -11,25 +10,34 @@ type CardProps = {
   slug: string;
 };
 
-export default function Services() {
+// 1. Menangkap data dari database
+export default function Services({ services }: { services: any[] }) {
   const [active, setActive]       = useState<number | null>(null);
   const [current, setCurrent]     = useState(0);
   const [direction, setDirection] = useState(1);
 
-  // Pakai servicesData langsung
-  const services = servicesData;
+  // 2. Pengaman otomatis jika jasa di DB kurang dari 4
+  const safeServices = services?.length >= 4 ? services : [
+    ...(services || []),
+    ...Array(Math.max(0, 4 - (services?.length || 0))).fill({
+      title: "Layanan Segera Hadir",
+      mainImage: "/Dummy.webp",
+      slug: "coming-soon",
+      description: "Layanan ini sedang dipersiapkan."
+    })
+  ];
 
   const isLeftActive  = active === 2 || active === 3;
   const isRightActive = active === 1 || active === 4;
 
   const prev = () => {
     setDirection(-1);
-    setCurrent((c) => (c === 0 ? services.length - 1 : c - 1));
+    setCurrent((c) => (c === 0 ? safeServices.length - 1 : c - 1));
   };
 
   const next = () => {
     setDirection(1);
-    setCurrent((c) => (c === services.length - 1 ? 0 : c + 1));
+    setCurrent((c) => (c === safeServices.length - 1 ? 0 : c + 1));
   };
 
   return (
@@ -62,14 +70,14 @@ export default function Services() {
                     transition={{ duration: 0.4, ease: "easeInOut" }}
                     className="absolute inset-0 w-full h-full"
                   >
-                    <Link href={`/services/${services[current].slug}`} className="block w-full h-full">
+                    <Link href={`/services/${safeServices[current].slug}`} className="block w-full h-full">
                       <img
-                        src={services[current].mainImage}
-                        alt={services[current].title}
+                        src={safeServices[current].mainImage}
+                        alt={safeServices[current].title}
                         className="w-full h-full object-cover"
                       />
                       <div className="absolute bottom-0 left-0 w-full bg-yellow-400 text-black px-6 py-3 flex justify-between items-center">
-                        <span className="font-semibold text-base">{services[current].title}</span>
+                        <span className="font-semibold text-base">{safeServices[current].title}</span>
                         <span className="text-xl">›</span>
                       </div>
                     </Link>
@@ -102,7 +110,7 @@ export default function Services() {
 
             {/* Dot indicator */}
             <div className="flex justify-center gap-2 mt-4">
-              {services.map((_, i) => (
+              {safeServices.map((_, i) => (
                 <button
                   key={i}
                   onClick={() => { setDirection(i > current ? 1 : -1); setCurrent(i); }}
@@ -149,7 +157,7 @@ export default function Services() {
                     style={{ flex: active === 2 ? 1.8 : active === 3 ? 0.6 : 1 }}
                     className="relative rounded-xl overflow-hidden w-full"
                   >
-                    <Card title={services[1].title} img={services[1].mainImage} slug={services[1].slug} />
+                    <Card title={safeServices[1].title} img={safeServices[1].mainImage} slug={safeServices[1].slug} />
                   </motion.div>
 
                   <motion.div
@@ -159,7 +167,7 @@ export default function Services() {
                     style={{ flex: active === 3 ? 1.8 : active === 2 ? 0.6 : 1 }}
                     className="relative rounded-xl overflow-hidden w-full"
                   >
-                    <Card title={services[0].title} img={services[0].mainImage} slug={services[0].slug} />
+                    <Card title={safeServices[0].title} img={safeServices[0].mainImage} slug={safeServices[0].slug} />
                   </motion.div>
                 </motion.div>
               </motion.div>
@@ -176,7 +184,7 @@ export default function Services() {
                   style={{ flex: active === 1 ? 1.8 : active === 4 ? 0.6 : 1 }}
                   className="relative rounded-xl overflow-hidden w-full min-h-50 lg:min-h-0"
                 >
-                  <Card title={services[2].title} img={services[2].mainImage} slug={services[2].slug} />
+                  <Card title={safeServices[2].title} img={safeServices[2].mainImage} slug={safeServices[2].slug} />
                 </motion.div>
 
                 <motion.div
@@ -186,7 +194,7 @@ export default function Services() {
                   style={{ flex: active === 4 ? 1.8 : active === 1 ? 0.6 : 1 }}
                   className="relative rounded-xl overflow-hidden w-full min-h-50 lg:min-h-0"
                 >
-                  <Card title={services[3].title} img={services[3].mainImage} slug={services[3].slug} />
+                  <Card title={safeServices[3].title} img={safeServices[3].mainImage} slug={safeServices[3].slug} />
                 </motion.div>
               </motion.div>
 

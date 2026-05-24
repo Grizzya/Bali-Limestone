@@ -13,7 +13,7 @@ export default async function ArtikelPage({
 }) {
   const resolvedSearchParams = await searchParams;
   const currentPage = Number(resolvedSearchParams.page) || 1;
-  const itemsPerPage = 1;
+  const itemsPerPage = 6;
   const skip = (currentPage - 1) * itemsPerPage;
 
   const [daftarArtikel, totalItems] = await Promise.all([
@@ -35,6 +35,19 @@ export default async function ArtikelPage({
 
     if (!judul || !konten) return;
 
+    // --- FUNGSI SAKTI PEMBUAT SLUG ---
+    // Mengubah "Batu Kapur Kualitas 1!" menjadi "batu-kapur-kualitas-1"
+    let slug = judul
+      .toLowerCase()
+      .trim()
+      .replace(/[^\w\s-]/g, '')
+      .replace(/[\s_-]+/g, '-')
+      .replace(/^-+|-+$/g, '');
+    
+    // Pastikan slug tidak kembar dengan menambahkan ID unik (opsional tapi aman)
+    const uniqueSuffix = Date.now().toString().slice(-4);
+    slug = `${slug}-${uniqueSuffix}`;
+
     let imageUrl = null;
     if (file && file.size > 0) {
       const arrayBuffer = await file.arrayBuffer();
@@ -51,8 +64,9 @@ export default async function ArtikelPage({
       }) as string;
     }
 
+    // Simpan ke database beserta slug-nya
     await prisma.artikel.create({
-      data: { judul, konten, gambar: imageUrl },
+      data: { slug, judul, konten, gambar: imageUrl },
     });
 
     await rekamAktivitas('TAMBAH_ARTIKEL', `Mempublikasikan artikel baru: "${judul}"`);

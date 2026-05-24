@@ -9,12 +9,17 @@ export default async function DashboardLayout({ children }: { children: React.Re
   const isSuperAdmin = currentUser?.role === 'SUPERADMIN';
 
   return (
-    <div className="flex min-h-screen bg-gray-50 text-black">
+    // Tambahkan flex-col untuk HP, dan md:flex-row untuk PC. Warna kembali ke aslinya.
+    <div className="flex flex-col md:flex-row min-h-screen bg-gray-50 text-black">
+      
       {/* 2. Panggil Sidebar dan kirim data status Super Admin */}
       <Sidebar isSuperAdmin={isSuperAdmin} />
 
-      {/* MAIN CONTENT AREA */}
-      <main className="flex-grow overflow-y-auto bg-gray-50">{children}</main>
+      {/* MAIN CONTENT AREA - Tambahkan pt-16 di HP agar tidak tertutup header mobile */}
+      <main className="flex-grow overflow-y-auto bg-gray-50 pt-16 md:pt-0">
+        {children}
+      </main>
+      
     </div>
   );
 }

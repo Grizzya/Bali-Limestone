@@ -6,9 +6,9 @@ import Link from "next/link";
 
 import ProductCard from "@/components/layout/ProductCard";
 import ProductModal from "@/components/layout/ProductModal";
-import { products } from "@/src/data/products";
+// import { products } from "@/src/data/products";
 
-export default function ProductSection() {
+export default function ProductSection({ products }: { products: any[] }) {
   const [selectedProduct, setSelectedProduct] = useState<any | null>(null);
 
   //  DETEKSI LAYAR 

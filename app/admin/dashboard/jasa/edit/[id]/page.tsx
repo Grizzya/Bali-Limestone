@@ -8,7 +8,6 @@ import SubmitButton from '../../../SubmitButton';
 import { rekamAktivitas } from '@/lib/logger';
 
 export default async function EditJasaPage({ params }: { params: Promise<{ id: string }> }) {
-  // Tunggu params diekstrak
   const jasaId = (await params).id;
 
   const jasa = await prisma.jasa.findUnique({
@@ -26,17 +25,20 @@ export default async function EditJasaPage({ params }: { params: Promise<{ id: s
     const deskripsi = formData.get('deskripsi') as string;
     const hargaInput = formData.get('harga') as string;
     const harga = hargaInput ? parseInt(hargaInput) : null;
-    const file = formData.get('gambar') as File;
+    
+    // Ambil ketiga file
+    const file1 = formData.get('gambar') as File;
+    const file2 = formData.get('gambar2') as File;
+    const file3 = formData.get('gambar3') as File;
 
     if (!nama) return;
 
-    let imageUrl = jasa?.gambar;
-
-    if (file && file.size > 0) {
+    // Fungsi helper upload: Jika file kosong, pertahankan foto yang sudah ada di database
+    const uploadToCloudinary = async (file: File | null, existingUrl: string | null) => {
+      if (!file || file.size === 0) return existingUrl; 
       const arrayBuffer = await file.arrayBuffer();
       const buffer = Buffer.from(arrayBuffer);
-
-      imageUrl = await new Promise((resolve, reject) => {
+      return new Promise((resolve, reject) => {
         const uploadStream = cloudinary.uploader.upload_stream(
           { folder: 'balilimestone_jasa' },
           (error: any, result: any) => {
@@ -45,13 +47,28 @@ export default async function EditJasaPage({ params }: { params: Promise<{ id: s
           }
         );
         uploadStream.end(buffer);
-      }) as string;
-    }
+      }) as Promise<string>;
+    };
+
+    // Upload paralel
+    const [imageUrl1, imageUrl2, imageUrl3] = await Promise.all([
+      uploadToCloudinary(file1, jasa?.gambar || null),
+      uploadToCloudinary(file2, jasa?.gambar2 || null),
+      uploadToCloudinary(file3, jasa?.gambar3 || null),
+    ]);
 
     await prisma.jasa.update({
       where: { id: jasaId },
-      data: { nama, deskripsi, harga, gambar: imageUrl },
+      data: { 
+        nama, 
+        deskripsi, 
+        harga, 
+        gambar: imageUrl1, 
+        gambar2: imageUrl2, 
+        gambar3: imageUrl3 
+      },
     });
+    
     await rekamAktivitas('EDIT_JASA', `Mengubah data layanan jasa: "${nama}"`);
 
     revalidatePath('/admin/dashboard/jasa');
@@ -90,7 +107,35 @@ export default async function EditJasaPage({ params }: { params: Promise<{ id: s
               className="w-full border px-4 py-3 rounded-lg outline-none h-32 resize-none" />
           </div>
 
-          <ImagePreview defaultImage={jasa.gambar} />
+          {/* FOTO UTAMA */}
+          <div className="border-b pb-4 mb-2">
+            <h3 className="font-semibold text-gray-700 mb-2">Foto Utama</h3>
+            <ImagePreview defaultImage={jasa.gambar} />
+          </div>
+
+          {/* FOTO GALERI */}
+          <div className="flex flex-col gap-4 p-5 bg-gray-50 border border-gray-200 rounded-xl">
+            <h3 className="font-semibold text-gray-700">Foto Galeri (Tambahan)</h3>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label className="block text-sm font-medium text-gray-500 mb-2">Foto Galeri 1</label>
+                {jasa.gambar2 && (
+                  <img src={jasa.gambar2} alt="Galeri 1" className="w-full h-32 object-cover rounded-lg border mb-2 shadow-sm" />
+                )}
+               <input type="file" name="gambar2" accept=".jpg, .jpeg, .png, .webp" className="w-full bg-white border p-2 rounded-lg text-sm" />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-500 mb-2">Foto Galeri 2</label>
+                {jasa.gambar3 && (
+                  <img src={jasa.gambar3} alt="Galeri 2" className="w-full h-32 object-cover rounded-lg border mb-2 shadow-sm" />
+                )}
+                <input type="file" name="gambar3" accept="image/*" className="w-full bg-white border p-2 rounded-lg text-sm" />
+              </div>
+            </div>
+            <p className="text-xs text-gray-400 italic mt-2">* Upload file baru jika ingin mengganti foto galeri sebelumnya.</p>
+          </div>
 
           <SubmitButton 
             label="Simpan Perubahan" 
